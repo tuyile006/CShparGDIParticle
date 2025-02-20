@@ -9,7 +9,6 @@
 ![文字粒子](https://img2024.cnblogs.com/blog/15080/202502/15080-20250204190508480-1559521088.gif)
 ![爱心](https://img2024.cnblogs.com/blog/15080/202502/15080-20250204190711142-724705712.gif)
 
-
 写完之后感受就是，C#也是可以写出炫酷的粒子效果的，而且不卡顿很丝滑。
 
 其中几个关键点：
@@ -23,7 +22,6 @@ public Form1()
      InitializeComponent();
  }
 ```
-
 
 **2. 在Paint事件中重绘粒子，不要在While（true）之类的循环里无间隔调用**。Winform中的Paint事件就相当于JavaScript中的requestAnimationFrame事件。
 
@@ -69,3 +67,6 @@ Bitmap bmp=new Bitmap(w,h, PixelFormat.Format24bppRgb);
 ```
 
 欢迎大家补充，实现更多有想象力的粒子效果。
+
+效果见：[更多效果图](https://www.cnblogs.com/tuyile006/p/18698404)
+
