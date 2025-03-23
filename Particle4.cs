@@ -12,7 +12,7 @@ using System.Windows.Forms;
 namespace CSharpGDI
 {
     /// <summary>
-    /// 粒子效果4
+    /// 粒子效果4——3D粒子
     /// </summary>
     internal class Particle4
     {

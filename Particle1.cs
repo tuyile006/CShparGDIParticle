@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace CSharpGDI
 {
     /// <summary>
-    /// 粒子效果1
+    /// 粒子效果1——抹纱窗
     /// </summary>
     internal class Particle1
     {

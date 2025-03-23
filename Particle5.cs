@@ -19,7 +19,7 @@ using System.Runtime.CompilerServices;
 namespace CSharpGDI
 {
     /// <summary>
-    /// 粒子效果5
+    /// 粒子效果5——水流体
     /// </summary>
     internal class Particle5
     {

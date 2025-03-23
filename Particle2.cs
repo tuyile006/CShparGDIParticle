@@ -12,7 +12,7 @@ using System.Windows.Forms;
 namespace CSharpGDI
 {
     /// <summary>
-    /// 粒子效果2
+    /// 粒子效果2——鼓泡泡
     /// </summary>
     internal class Particle2
     {

@@ -13,6 +13,7 @@ using System.Reflection.Emit;
 using System.Timers;
 using System.Threading;
 using System.Drawing.Drawing2D;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace CSharpGDI
 {
@@ -38,6 +39,7 @@ namespace CSharpGDI
             btn3dparticle.Text = "3D旋转粒子效果";
             btnFluid.Text = "水流体效果";
             btnMouseParticle.Text = "鼠标粒子效果";
+            groupBox1.Visible = false;
             label2.Text = "";
             limitFps = 0;
             fps = 0;
@@ -131,7 +133,12 @@ namespace CSharpGDI
                 CalFps();
             }
 
-            
+            if (animations.Contains("数学曲线"))
+            {
+                currbmp = Particle7.Start(pictureBox1.Width, pictureBox1.Height);
+                pictureBox1.Image = currbmp;
+                CalFps();
+            }
         }
 
         Point mousePoint=new Point(0,0);
@@ -292,11 +299,42 @@ namespace CSharpGDI
                 pictureBox1.Refresh();
             }
         }
-        private void button1_Click(object sender, EventArgs e)
+      
+
+        private void btnMathArc_Click(object sender, EventArgs e)
         {
-            //Particle6.DrawHeart(pictureBox1.Width, pictureBox1.Height);
+            if (btnMathArc.Text.Contains("停止"))
+            {
+                groupBox1.Visible = false;
+                btnMathArc.Text = "数学曲线";
+                animations.Clear();
+                limitFps = 0;
+            }
+            else
+            {
+                animations.Clear();
+                ResetButtons();
+                btnMathArc.Text = "停止数学曲线效果";
+                
+                groupBox1.Visible = true;
+                trackBar1_split.Value = Particle7.coSplit;
+
+                //需要限制fps
+                SetLimitFps(90);
+                animations.Add("数学曲线");
+                ReStartCalFps();
+                pictureBox1.Refresh();
+            }
         }
 
-      
+        private void trackBar1_split_ValueChanged(object sender, EventArgs e)
+        {
+            Particle7.coSplit = trackBar1_split.Value;
+        }
+
+        private void btnNextMath_Click(object sender, EventArgs e)
+        {
+            Particle7.curMath = Particle7.curMath + 1;
+        }
     }
 }

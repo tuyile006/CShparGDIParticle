@@ -16,7 +16,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 namespace CSharpGDI
 {
     /// <summary>
-    /// 粒子效果6
+    /// 粒子效果6——鼠标粒子
     /// </summary>
     internal class Particle6
     {
