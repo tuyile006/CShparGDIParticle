@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CSharpGDI
 {
     /// <summary>
     /// 粒子效果1——抹纱窗
     /// </summary>
-    internal class Particle1
+    public class Particle1: IParticle
     {
         public struct ParticleObj
         {
@@ -25,29 +20,23 @@ namespace CSharpGDI
             public int vy; //方向y向量
             public int vspeed; //速度
         }
-        static List<ParticleObj> particles = new List<ParticleObj>();
+        List<ParticleObj> particles = new List<ParticleObj>();
 
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="g">Graphics对象</param>
-        /// <param name="w">宽</param>
-        /// <param name="h">高</param>
-        /// <param name="span">间距</param>
-        public static void Init(Graphics g,int w,int h,int span=6)
+        public void Start()
         {
+            int span = 6;
             particles.Clear();
-            Bitmap bmp=new Bitmap(w,h, PixelFormat.Format24bppRgb);
-            BitmapData data = bmp.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            int length = h * data.Stride;
+            Bitmap bmp=new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, GameWindow.width, GameWindow.height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            int length = GameWindow.height * data.Stride;
             byte[] RGB = new byte[length];
             System.IntPtr Scan0 = data.Scan0;
             System.Runtime.InteropServices.Marshal.Copy(Scan0, RGB, 0, length);
             
-            for (int y = 0; y < h; y++)
+            for (int y = 0; y < GameWindow.height; y++)
             {
                 int index = y * data.Stride;
-                for (int x = 0; x < w; x++)
+                for (int x = 0; x < GameWindow.width; x++)
                 {
                     if (x % span == 0 && y % span == 0)
                     {
@@ -66,56 +55,45 @@ namespace CSharpGDI
                     }
                 }
             }
-            System.Runtime.InteropServices.Marshal.Copy(RGB, 0, Scan0, length);
-            bmp.UnlockBits(data);
-            g.DrawImage(bmp,0,0);
-
         }
-
-        //动画 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="mouseX1">鼠标x坐标</param>
-        /// <param name="mouseY1"></param>
-        /// <param name="w">宽</param>
-        /// <param name="h">高</param>
-        /// <param name="R">圆的半径</param>
-        /// <param name="V">移动方向 0：x  1：y</param>
-        public static Bitmap Start(int mouseX1, int mouseY1, int w, int h, int R,int V)
+       
+        public Bitmap Update()
         {
-            for (int i = 0; i < particles.Count; i++) 
+            int R = 100;//圆的半径
+            int V = 0;//移动方向 0：x  1：y
+
+            for (int i = 0; i < particles.Count; i++)
             {
-                ParticleObj p= particles[i];
-                if (p.x > mouseX1 - R && p.x < mouseX1 + R
-                    && p.y > mouseY1 - R && p.y < mouseY1 + R)
+                ParticleObj p = particles[i];
+                if (p.x > GameWindow.mouseX - R && p.x < GameWindow.mouseX + R
+                    && p.y > GameWindow.mouseY - R && p.y < GameWindow.mouseY + R)
                 {
                     //当前点在圆内时
-                    if (R * R > (p.x - mouseX1) * (p.x - mouseX1) + (p.y - mouseY1) * (p.y - mouseY1))
+                    if (R * R > (p.x - GameWindow.mouseX) * (p.x - GameWindow.mouseX) + (p.y - GameWindow.mouseY) * (p.y - GameWindow.mouseY))
                     {
                         //发散
                         if (V == 0) //移动y轴
                         {
-                            double r1 = Math.Sqrt(R * R - (mouseX1 - p.x) * (mouseX1 - p.x));
-                            if (p.y > mouseY1)
+                            double r1 = Math.Sqrt(R * R - (GameWindow.mouseX - p.x) * (GameWindow.mouseX - p.x));
+                            if (p.y > GameWindow.mouseY)
                             {
-                                p.y = (int)(mouseY1 + r1 * 3);
+                                p.y = (int)(GameWindow.mouseY + r1 * 3);
                             }
                             else
                             {
-                                p.y = (int)(mouseY1 - r1 * 3);
+                                p.y = (int)(GameWindow.mouseY - r1 * 3);
                             }
                         }
                         else  //移动x轴
                         {
-                            double r2 = Math.Sqrt(R * R - (mouseY1 - p.y) * (mouseY1 - p.y));
-                            if (p.x > mouseX1)
+                            double r2 = Math.Sqrt(R * R - (GameWindow.mouseY - p.y) * (GameWindow.mouseY - p.y));
+                            if (p.x > GameWindow.mouseX)
                             {
-                                p.x = (int)(mouseX1 + r2*3);
+                                p.x = (int)(GameWindow.mouseX + r2 * 3);
                             }
                             else
                             {
-                                p.x = (int)(mouseX1 - r2*3);
+                                p.x = (int)(GameWindow.mouseX - r2 * 3);
                             }
                         }
 
@@ -148,16 +126,16 @@ namespace CSharpGDI
             }
 
             //还原图片
-            Bitmap dstBitmap = new Bitmap(w, h, PixelFormat.Format24bppRgb);
-            BitmapData dstBmData = dstBitmap.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            Bitmap dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
+            BitmapData dstBmData = dstBitmap.LockBits(new Rectangle(0, 0, GameWindow.width, GameWindow.height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
-            int dst_bytes = h * dstBmData.Stride;
+            int dst_bytes = GameWindow.height * dstBmData.Stride;
             byte[] dstValues = new byte[dst_bytes];
 
 
             foreach (ParticleObj p in particles)
             {
-                if (p.y < 0 || p.y >= h || p.x < 0 || p.x >= w) continue;
+                if (p.y < 0 || p.y >= GameWindow.height || p.x < 0 || p.x >= GameWindow.width) continue;
                 int n = p.y * dstBmData.Stride + p.x * 3;
                 //只处理每行中图像像素数据,舍弃未用空间
                 //注意位图结构中RGB按BGR的顺序存储

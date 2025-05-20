@@ -1,27 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.AxHost;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Xml.Linq;
-using static CSharpGDI.Particle4;
-using System.Runtime.CompilerServices;
 
 namespace CSharpGDI
 {
     /// <summary>
     /// 粒子效果5——水流体
     /// </summary>
-    internal class Particle5
+    public class Particle5:IParticle
     {
         static List<ParticleObj> particles = null;
         static double kRadius = 0;
@@ -34,70 +22,53 @@ namespace CSharpGDI
         static int canvasW;
         static int canvasH;
         //鼠标事件
-        static int mouseX;
-        static int mouseY;
-        static bool isDown;
         //每帧返回的图片
         static Bitmap dstBitmap;
         static Graphics g;
         static Pen linPen=new Pen(Brushes.Black);
         static Pen BoxBordPen = new Pen(Brushes.Black);
 
-        /// <summary>
-        /// 初始化粒子对象
-        /// </summary>
-        /// <param name="w">宽</param>
-        /// <param name="h">高</param>
-        /// <param name="particleNum">粒子数量</param>
-        public static void Init(int w, int h,int particleNum=1200)
+       
+        public void Start()
         {
-            dstBitmap = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+            int particleNum = 1200;//粒子数量
+            dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
             g = Graphics.FromImage(dstBitmap);
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            canvasW = w; 
-            canvasH = h;
+            canvasW = GameWindow.width; 
+            canvasH = GameWindow.height;
             SolidBrush brush = new SolidBrush(Color.FromArgb(72, 209, 204));
             linPen = new Pen(brush);
             BoxBordPen = new Pen(brush, 3);
 
-            kRadius = Math.Round(0.04 * Math.Sqrt(w *h));
+            kRadius = Math.Round(0.04 * Math.Sqrt(GameWindow.width * GameWindow.height));
             container.init(0.35);
             particles = new List<ParticleObj>();
             double s = container.scale;
-            double x = w * s * 0.5;
-            double y = h * s * 0.5;
+            double x = GameWindow.width * s * 0.5;
+            double y = GameWindow.height * s * 0.5;
             for (int i = 0; i < particleNum; ++i)
             {
                 particles.Add(new ParticleObj(x, y));
                 x += kRadius / 2.5;
-                if (x > w * (1 - s * 0.5))
+                if (x > GameWindow.width * (1 - s * 0.5))
                 {
-                    x = w * s * 0.5;
+                    x = GameWindow.width * s * 0.5;
                     y += kRadius / 3;
                 }
             }
-            grid.initSize(w, h, (int)kRadius);
+            grid.initSize(GameWindow.width, GameWindow.height, (int)kRadius);
             grid.fill(particles);
 
         }
 
-        /// <summary>
-        /// 动画 
-        /// </summary>
-        /// <param name="moX">鼠标x坐标</param>
-        /// <param name="moY"></param>
-        /// <param name="modown">鼠标是否按下</param>
-        /// <param name="w">宽</param>
-        /// <param name="h">高</param>
-        public static Bitmap Start(int moX, int moY,bool modown, int w, int h)
+        public Bitmap Update()
         {
-            if (particles==null||particles.Count == 0) Init(w, h);
+            if (particles==null||particles.Count == 0) Start();
             g.ResetTransform();
             g.Clear(Color.FromArgb(160,221,219));//"#bebebf"
-            mouseX = moX;
-            mouseY = moY;
-            isDown = modown;
+          
 
             container.rotate();
 
@@ -130,8 +101,8 @@ namespace CSharpGDI
             
             public void turbine()
             {
-                double dx = mouseX - this.x;
-                double dy = mouseY - this.y;
+                double dx = GameWindow.mouseX - this.x;
+                double dy = GameWindow.mouseY - this.y;
                 double d = Math.Sqrt(dx * dx + dy * dy);
                 if (d < 2 * kRadius&& d !=-1)
                 {
@@ -144,7 +115,7 @@ namespace CSharpGDI
             public void integrate()
             {
                 container.limit(this);
-                if (isDown) this.turbine();
+                if (GameWindow.isMouseDown) this.turbine();
                 double x0 = this.x;
                 double y0 = this.y;
                 this.x += x0 - this.px;
@@ -332,7 +303,7 @@ namespace CSharpGDI
                 double w = canvasW;
                 double h = canvasH;
                 double s = this.scale;
-                this.ai += isDown ? 0 : 0.05;
+                this.ai += GameWindow.isMouseDown ? 0 : 0.05;
                 double angle = Math.Sin(this.ai) * s * Math.Min(1.0, h / w);
                 double cos = Math.Cos(angle);
                 double sin = Math.Sin(angle);

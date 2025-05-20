@@ -29,8 +29,12 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.btnMathArc = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnNextMath = new System.Windows.Forms.Button();
+            this.trackBar1_split = new System.Windows.Forms.TrackBar();
+            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnMathArc = new System.Windows.Forms.Button();
             this.btnMouseParticle = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btnFluid = new System.Windows.Forms.Button();
@@ -39,17 +43,13 @@
             this.btnParticle2 = new System.Windows.Forms.Button();
             this.btnparticle1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.trackBar1_split = new System.Windows.Forms.TrackBar();
-            this.label3 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.btnNextMath = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1_split)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1_split)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -82,6 +82,59 @@
             this.splitContainer1.SplitterWidth = 6;
             this.splitContainer1.TabIndex = 0;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnNextMath);
+            this.groupBox1.Controls.Add(this.trackBar1_split);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Location = new System.Drawing.Point(29, 459);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(389, 170);
+            this.groupBox1.TabIndex = 21;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Visible = false;
+            // 
+            // btnNextMath
+            // 
+            this.btnNextMath.Location = new System.Drawing.Point(126, 101);
+            this.btnNextMath.Name = "btnNextMath";
+            this.btnNextMath.Size = new System.Drawing.Size(143, 40);
+            this.btnNextMath.TabIndex = 23;
+            this.btnNextMath.Text = "下一个曲线";
+            this.btnNextMath.UseVisualStyleBackColor = true;
+            this.btnNextMath.Click += new System.EventHandler(this.btnNextMath_Click);
+            // 
+            // trackBar1_split
+            // 
+            this.trackBar1_split.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.trackBar1_split.Location = new System.Drawing.Point(116, 36);
+            this.trackBar1_split.Maximum = 300;
+            this.trackBar1_split.Minimum = 5;
+            this.trackBar1_split.Name = "trackBar1_split";
+            this.trackBar1_split.Size = new System.Drawing.Size(248, 69);
+            this.trackBar1_split.TabIndex = 19;
+            this.trackBar1_split.TickFrequency = 20;
+            this.trackBar1_split.Value = 5;
+            this.trackBar1_split.ValueChanged += new System.EventHandler(this.trackBar1_split_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(13, 46);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(98, 18);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "刻度尺寸：";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(42, 835);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(0, 18);
+            this.label2.TabIndex = 17;
+            // 
             // btnMathArc
             // 
             this.btnMathArc.BackColor = System.Drawing.SystemColors.Control;
@@ -94,15 +147,6 @@
             this.btnMathArc.UseVisualStyleBackColor = false;
             this.btnMathArc.Click += new System.EventHandler(this.btnMathArc_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(42, 835);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(0, 18);
-            this.label2.TabIndex = 17;
-            // 
             // btnMouseParticle
             // 
             this.btnMouseParticle.BackColor = System.Drawing.SystemColors.Control;
@@ -111,7 +155,7 @@
             this.btnMouseParticle.Name = "btnMouseParticle";
             this.btnMouseParticle.Size = new System.Drawing.Size(348, 44);
             this.btnMouseParticle.TabIndex = 16;
-            this.btnMouseParticle.Text = "鼠标粒子效果";
+            this.btnMouseParticle.Text = "爱心效果";
             this.btnMouseParticle.UseVisualStyleBackColor = false;
             this.btnMouseParticle.Click += new System.EventHandler(this.btnMouseParticle_Click);
             // 
@@ -200,50 +244,6 @@
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
             // 
-            // trackBar1_split
-            // 
-            this.trackBar1_split.BackColor = System.Drawing.Color.MediumTurquoise;
-            this.trackBar1_split.Location = new System.Drawing.Point(116, 36);
-            this.trackBar1_split.Maximum = 300;
-            this.trackBar1_split.Minimum = 5;
-            this.trackBar1_split.Name = "trackBar1_split";
-            this.trackBar1_split.Size = new System.Drawing.Size(248, 69);
-            this.trackBar1_split.TabIndex = 19;
-            this.trackBar1_split.TickFrequency = 20;
-            this.trackBar1_split.Value = 5;
-            this.trackBar1_split.ValueChanged += new System.EventHandler(this.trackBar1_split_ValueChanged);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 46);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(98, 18);
-            this.label3.TabIndex = 20;
-            this.label3.Text = "刻度尺寸：";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.btnNextMath);
-            this.groupBox1.Controls.Add(this.trackBar1_split);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Location = new System.Drawing.Point(29, 459);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(389, 170);
-            this.groupBox1.TabIndex = 21;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Visible = false;
-            // 
-            // btnNextMath
-            // 
-            this.btnNextMath.Location = new System.Drawing.Point(126, 101);
-            this.btnNextMath.Name = "btnNextMath";
-            this.btnNextMath.Size = new System.Drawing.Size(143, 40);
-            this.btnNextMath.TabIndex = 23;
-            this.btnNextMath.Text = "下一个曲线";
-            this.btnNextMath.UseVisualStyleBackColor = true;
-            this.btnNextMath.Click += new System.EventHandler(this.btnNextMath_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -254,15 +254,16 @@
             this.Name = "Form1";
             this.Text = "GDI绘图测试";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1_split)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1_split)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

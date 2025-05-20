@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CSharpGDI
 {
     /// <summary>
     /// 粒子效果3——文字粒子
     /// </summary>
-    internal class Particle3
+    public class Particle3:IParticle
     {
         public struct ParticleObj
         {
@@ -34,34 +29,29 @@ namespace CSharpGDI
             public double friction;//摩擦系数
 
         }
-        static List<ParticleObj> particles = new List<ParticleObj>();
+         List<ParticleObj> particles = new List<ParticleObj>();
 
-        static int speed0 = 5;//初速度
-        static Bitmap dstBitmap;
-        static Graphics g;
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="g">Graphics对象</param>
-        /// <param name="w">宽</param>
-        /// <param name="h">高</param>
-        /// <param name="txt">文字内容</param>
-        /// <param name="size">文字大小</param>
-        public static Bitmap Init(int w,int h,string txt="Happy",int size=150)
+         int speed0 = 5;//初速度
+         Bitmap dstBitmap;
+         Graphics g;
+        
+        public  void Start()
         {
-            dstBitmap = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+            string txtShow = "Happy";
+            int size = 150;//文字大小
+            dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
             g= Graphics.FromImage(dstBitmap);
             g.Clear(Color.Black);
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            string txtShow = "Happy";
+            
             Font txtFont = new Font("Baloo", size);
             SizeF sf = g.MeasureString(txtShow, txtFont);
-            g.DrawString(txtShow, txtFont, Brushes.White, (w - sf.Width) / 2, (h-sf.Height)/2);
+            g.DrawString(txtShow, txtFont, Brushes.White, (GameWindow.width - sf.Width) / 2, (GameWindow.height - sf.Height)/2);
             
             
 
-            BitmapData data = dstBitmap.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            int length = h * data.Stride;
+            BitmapData data = dstBitmap.LockBits(new Rectangle(0, 0, GameWindow.width, GameWindow.height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            int length = GameWindow.height * data.Stride;
             byte[] ARGB = new byte[length];
             System.IntPtr Scan0 = data.Scan0;
             System.Runtime.InteropServices.Marshal.Copy(Scan0, ARGB, 0, length);
@@ -71,17 +61,17 @@ namespace CSharpGDI
             Random rnd=new Random();
             int i = 0;
             //获取像素点
-            for (var y = 0; y < h; y = y +(int)h/100)
+            for (var y = 0; y < GameWindow.height; y = y +(int)GameWindow.height / 100)
             {
                 i = y * data.Stride;
-                for (var x = 0; x < w; x=x+ (int)w/100)
+                for (var x = 0; x < GameWindow.width; x=x+ (int)GameWindow.width / 100)
                 {
                     if (ARGB[i + x * 3] > 150)
                     {
                         ParticleObj p = new ParticleObj();
                         p.d = rnd.Next(4, 14);
-                        p.x = w * rnd.NextDouble();
-                        p.y = h * rnd.NextDouble();
+                        p.x = GameWindow.width * rnd.NextDouble();
+                        p.y = GameWindow.height * rnd.NextDouble();
                         //p.x = x;
                         //p.y = y;
                         p.dx = x;
@@ -103,14 +93,7 @@ namespace CSharpGDI
             }
             dstBitmap.UnlockBits(data);
 
-            //画图
-            g.Clear(Color.Black);
-            for (int j = 0; j < particles.Count; j++)
-            { 
-                var p = particles[j];
-                g.FillEllipse(p.b, (int)p.x - p.d / 2, (int)p.y - p.d / 2, p.d, p.d);
-            }
-            return dstBitmap;
+            
         }
 
         //动画 
@@ -122,10 +105,11 @@ namespace CSharpGDI
         /// <param name="w">宽</param>
         /// <param name="h">高</param>
         /// <param name="R">圆的半径</param>
-        public static Bitmap Start(int mouseX, int mouseY, int w, int h, int R=80)
+        public Bitmap Update()
         {
+            int R = 80;//圆的半径
             if (particles.Count == 0) 
-                Init(w,h);
+                Start();
             g.Clear(Color.Black);
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
@@ -142,13 +126,13 @@ namespace CSharpGDI
                 p.x +=p.vx;
                 p.y +=p.vy;
 
-                int a = (int)p.x - mouseX;
-                int b = (int)p.y - mouseY;
+                int a = (int)p.x - GameWindow.mouseX;
+                int b = (int)p.y - GameWindow.mouseY;
                 double distance=Math.Sqrt(a*a + b*b);
                 if (distance < R)
                 {
-                    p.accX = (double)(p.x - mouseX) / 100;
-                    p.accY = (double)(p.y - mouseY) / 100;
+                    p.accX = (double)(p.x - GameWindow.mouseX) / 100;
+                    p.accY = (double)(p.y - GameWindow.mouseY) / 100;
                     p.vx += p.accX;
                     p.vy += p.accY;
                 }

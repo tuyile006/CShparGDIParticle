@@ -53,7 +53,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameWindow.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="IParticle.cs" />
     <Compile Include="Particle7.cs" />
     <Compile Include="Particle6.cs" />
     <Compile Include="Particle5.cs" />

@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CSharpGDI
 {
     /// <summary>
     /// 粒子效果2——鼓泡泡
     /// </summary>
-    internal class Particle2
+    public class Particle2:IParticle
     {
         public struct ParticleObj
         {
@@ -34,20 +29,18 @@ namespace CSharpGDI
         static Bitmap bmp = null; 
         static Graphics g = null;
 
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="w">宽</param>
-        /// <param name="h">高</param>
-        /// <param name="span">间距</param>
-        public static void Init(int w,int h,int size=15,int span=5)
+       
+        public void Start()
         {
+            int size = 15; //大小
+            int span = 5;  //间距
+
             particles.Clear();
             Random rnd=new Random();
-            int r0 = Math.Min(w / size, h / size);
-            for (var x = 0; x < w / r0; x++)
+            int r0 = Math.Min(GameWindow.width / size, GameWindow.height / size);
+            for (var x = 0; x < GameWindow.width / r0; x++)
             {
-                for (var y = 0; y < h / r0; y++)
+                for (var y = 0; y < GameWindow.height / r0; y++)
                 {
                     ParticleObj p = new ParticleObj()
                     {
@@ -71,7 +64,7 @@ namespace CSharpGDI
                 }
             }
 
-            bmp = new Bitmap(w, h, PixelFormat.Format32bppArgb);
+            bmp = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format32bppArgb);
             g = Graphics.FromImage(bmp);
         }
 
@@ -83,10 +76,11 @@ namespace CSharpGDI
         /// <param name="w">宽</param>
         /// <param name="h">高</param>
         /// <param name="R">圆的半径</param>
-        public static Bitmap Start(int mouseX, int mouseY, int w, int h, int R=150)
+        public Bitmap Update()
         {
-            if (particles.Count == 0) 
-                Init(w,h);
+            int R = 150;//圆的半径
+            if (particles.Count == 0)
+                Start();
 
             g.Clear(Color.Black);
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -94,20 +88,20 @@ namespace CSharpGDI
             for (var i = 0; i < particles.Count; i++)
             {
                 var p = particles[i];
-                if (R * R > (p.px - mouseX) * (p.px - mouseX) + (p.py - mouseY) * (p.py - mouseY))
+                if (R * R > (p.px - GameWindow.mouseX) * (p.px - GameWindow.mouseX) + (p.py - GameWindow.mouseY) * (p.py - GameWindow.mouseY))
                 {
-                    if (p.px > mouseX)
+                    if (p.px > GameWindow.mouseX)
                         p.px += speed ;
-                    if (p.px < mouseX)
+                    if (p.px < GameWindow.mouseX)
                         p.px -= speed;
-                    if (p.py > mouseY)
+                    if (p.py > GameWindow.mouseY)
                         p.py += speed ;
-                    if (p.py < mouseY)
+                    if (p.py < GameWindow.mouseY)
                         p.py -= speed;
 
                     if (rnd.Next(2) == 1)
                     {
-                        p.d = (p.d+speed*5 >w/2?w/2:p.d+speed*5);
+                        p.d = (p.d+speed*5 >GameWindow.width/2?GameWindow.width/2:p.d+speed*5);
                     }
                     else
                     {
@@ -141,5 +135,7 @@ namespace CSharpGDI
             }
             return bmp;
         }
+
+       
     }
 }

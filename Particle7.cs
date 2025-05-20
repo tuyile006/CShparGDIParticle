@@ -4,22 +4,13 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace CSharpGDI
 {
     /// <summary>
     /// 粒子效果7——数学曲线
     /// </summary>
-    internal class Particle7
+    public class Particle7:IParticle
     {
         //public struct ParticleObj
         //{
@@ -28,13 +19,13 @@ namespace CSharpGDI
         //    public double size;
         //    public SolidBrush b;
         //}
-        //static List<ParticleObj> particles = new List<ParticleObj>();
+        // List<ParticleObj> particles = new List<ParticleObj>();
 
-        static Bitmap dstBitmap;
-        static Graphics g;
-        static int width;
-        static int height;
-        static int curFrame = 0;//当前帧数
+         Bitmap dstBitmap;
+         Graphics g;
+         int width;
+         int height;
+         int curFrame = 0;//当前帧数
         
         /*
             hue += 3;
@@ -42,30 +33,28 @@ namespace CSharpGDI
             Color c = HslToRgb(hue, 90, 60);
             SolidBrush brush = new SolidBrush(c);
          */
-        static int hue=0;//色相（hue）HSL色系中的参数
-        static int coordinateSystem_x = 0; //坐标系x位置
-        static int coordinateSystem_y = 0; //坐标系y位置
-        static List<string> mathList = new List<string>();//曲线队列
-        static int padding = 20; //四周间隔
-        public static int coSplit = 100;//间隔200  代表200个像素为1个单位长度。
-        public static int curMath = 0;//当前函数曲线index
+         int hue=0;//色相（hue）HSL色系中的参数
+         int coordinateSystem_x = 0; //坐标系x位置
+         int coordinateSystem_y = 0; //坐标系y位置
+         List<string> mathList = new List<string>();//曲线队列
+         int padding = 20; //四周间隔
+        public  int coSplit = 100;//间隔200  代表200个像素为1个单位长度。
+        public  int curMath = 0;//当前函数曲线index
 
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="w">宽</param>
-        /// <param name="h">高</param>
-        public static Bitmap Init(int w,int h)
+        public  void Start()
         {
-            dstBitmap = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+            dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
             g= Graphics.FromImage(dstBitmap);
             g.Clear(Color.Black);
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            width = w;
-            height = h;
+            width = GameWindow.width;
+            height = GameWindow.height;
             hue = 0;
-            coordinateSystem_x = w / 2;
-            coordinateSystem_y = h / 2;
+            coordinateSystem_x = GameWindow.width / 2;
+            coordinateSystem_y = GameWindow.height / 2;
 
             mathList.Add("sin");
             mathList.Add("cos");
@@ -79,7 +68,6 @@ namespace CSharpGDI
             mathList.Add("rose");
             mathList.Add("arch");
 
-            return dstBitmap;
         }
 
        
@@ -88,10 +76,10 @@ namespace CSharpGDI
         /// </summary>
         /// <param name="w">宽</param>
         /// <param name="h">高</param>
-        public static Bitmap Start(int w, int h)
+        public  Bitmap Update()
         {
             if (dstBitmap==null) 
-                Init(w,h);
+                Start();
             g.Clear(Color.Black);
             curFrame++;
 
@@ -144,7 +132,7 @@ namespace CSharpGDI
         /// <summary>
         /// sin曲线
         /// </summary>
-        private static void DrawSin()
+        private  void DrawSin()
         {
             CreateCoordinateSystem(coSplit,padding);
             SolidBrush brush = new SolidBrush(Color.FromArgb(72, 209, 204));
@@ -174,7 +162,7 @@ namespace CSharpGDI
         /// <summary>
         /// X*Sin曲线
         /// </summary>
-        private static void DrawXSin()
+        private  void DrawXSin()
         {
             CreateCoordinateSystem(coSplit, padding);
             SolidBrush brush = new SolidBrush(Color.FromArgb(72, 209, 204));
@@ -206,7 +194,7 @@ namespace CSharpGDI
         /// <summary>
         /// cos曲线
         /// </summary>
-        private static void DrawCos()
+        private  void DrawCos()
         {
             CreateCoordinateSystem(coSplit, padding);
             SolidBrush brush = new SolidBrush(Color.FromArgb(72, 209, 204));
@@ -237,7 +225,7 @@ namespace CSharpGDI
         /// <summary>
         /// tan曲线
         /// </summary>
-        private static void DrawTan()
+        private  void DrawTan()
         {
             CreateCoordinateSystem(coSplit, padding);
             SolidBrush brush = new SolidBrush(Color.FromArgb(72, 209, 204));
@@ -267,7 +255,7 @@ namespace CSharpGDI
         /// <summary>
         /// pow曲线
         /// </summary>
-        private static void DrawPow(int fy)
+        private  void DrawPow(int fy)
         {
             CreateCoordinateSystem(coSplit, padding);
             SolidBrush brush = new SolidBrush(Color.FromArgb(72, 209, 204));
@@ -302,7 +290,7 @@ namespace CSharpGDI
         /// <summary>
         /// 平方根曲线
         /// </summary>
-        private static void DrawSqrt()
+        private  void DrawSqrt()
         {
             CreateCoordinateSystem(coSplit, padding);
             SolidBrush brush = new SolidBrush(Color.FromArgb(72, 209, 204));
@@ -336,7 +324,7 @@ namespace CSharpGDI
         /// <summary>
         /// 心形线
         /// </summary>
-        private static void DrawHeart()
+        private  void DrawHeart()
         {
             CreateCoordinateSystem(coSplit, padding);
             SolidBrush brush = new SolidBrush(Color.FromArgb(72, 209, 204));
@@ -371,7 +359,7 @@ namespace CSharpGDI
         /// <summary>
         /// 玫瑰线
         /// </summary>
-        private static void DrawRose()
+        private  void DrawRose()
         {
             CreateCoordinateSystem(coSplit, padding);
             SolidBrush brush = new SolidBrush(Color.FromArgb(72, 209, 204));
@@ -406,7 +394,7 @@ namespace CSharpGDI
         /// <summary>
         /// 阿基米德螺线
         /// </summary>
-        private static void DrawArch()
+        private  void DrawArch()
         {
             CreateCoordinateSystem(coSplit, padding);
             SolidBrush brush = new SolidBrush(Color.FromArgb(72, 209, 204));
@@ -442,7 +430,7 @@ namespace CSharpGDI
         /// 画坐标系
         /// </summary>
         /// <param name="coSplit">坐标系刻度间隔</param>
-        private static void CreateCoordinateSystem(int coSplit, int padding)
+        private  void CreateCoordinateSystem(int coSplit, int padding)
         {
             
             Pen p = new Pen(Color.White, 2);
@@ -496,7 +484,7 @@ namespace CSharpGDI
         /// <param name="Saturation">饱和度（saturation）0-100</param>
         /// <param name="Lightness">亮度（lightness）0-100</param>
         /// <returns>Color</returns>
-        static Color HslToRgb(int Hue, int Saturation, int Lightness)
+         Color HslToRgb(int Hue, int Saturation, int Lightness)
         {
             double r = 0.0;
             double g = 0.0;

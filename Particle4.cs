@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace CSharpGDI
 {
     /// <summary>
     /// 粒子效果4——3D粒子
     /// </summary>
-    internal class Particle4
+    public class Particle4:IParticle
     {
         public struct Particle 
         {
@@ -56,16 +51,12 @@ namespace CSharpGDI
             public double d;
         }
 
-        static Particle4Vars vars=null;
+         Particle4Vars vars=null;
 
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="w">宽</param>
-        /// <param name="h">高</param>
-        public static Bitmap Init(int w,int h)
+        
+        public void Start()
         {
-            Bitmap dstBitmap = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+            Bitmap dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
             Graphics g= Graphics.FromImage(dstBitmap);
             g.Clear(Color.Black);
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -74,15 +65,15 @@ namespace CSharpGDI
             vars.g = g;
             vars.dstBitmap = dstBitmap;
             vars.frameNo = 0;
-            vars.w = w;
-            vars.h = h;
+            vars.w = GameWindow.width;
+            vars.h = GameWindow.height;
             vars.camX = 0;
             vars.camY = 0;
             vars.camZ = -14;
             vars.pitch = Elevation(vars.camX, vars.camZ, vars.camY) - Math.PI / 2;
             vars.yaw = 0; //偏角
-            vars.cx = w / 2;
-            vars.cy = h / 2;
+            vars.cx = GameWindow.width / 2;
+            vars.cy = GameWindow.height / 2;
             vars.scale = 500;
             vars.floor = 26.5;
 
@@ -91,8 +82,6 @@ namespace CSharpGDI
             vars.initV = .01;
             vars.distributionRadius = 800;
             vars.vortexHeight = 25;
-
-            return dstBitmap;
         }
         //动画 
         /// <summary>
@@ -103,9 +92,9 @@ namespace CSharpGDI
         /// <param name="w">宽</param>
         /// <param name="h">高</param>
         /// <param name="R">圆的半径</param>
-        public static Bitmap Start(int w, int h)
+        public Bitmap Update()
         {
-            if (vars == null) Init(w, h);
+            if (vars == null) Start();
             vars.frameNo++;
            
             ReCalc();
@@ -117,7 +106,7 @@ namespace CSharpGDI
 
 
         //计算俯视角度
-        private static double Elevation(double x, double y, double z)
+        private double Elevation(double x, double y, double z)
         {
 
             var dist = Math.Sqrt(x * x + y * y + z * z);
@@ -127,7 +116,7 @@ namespace CSharpGDI
                 return 0.00000001;
         }
         //生产粒子
-        private static void SpawnParticle()
+        private void SpawnParticle()
         {
             Random rd= new Random(); 
             double p, ls;
@@ -144,7 +133,7 @@ namespace CSharpGDI
         }
 
        
-        private static int[] rgbArray(double col)
+        private int[] rgbArray(double col)
         {
 
             col += 0.000001;
@@ -153,7 +142,7 @@ namespace CSharpGDI
             var b = (int)((0.5 - Math.Sin(col) * 0.5) * 256);
             return new int[] { r, g, b };
         }
-        private static int[] interpolateColors(int[] RGB1,int[] RGB2,double degree)
+        private int[] interpolateColors(int[] RGB1,int[] RGB2,double degree)
         {
 
             var w2 = degree;
@@ -163,7 +152,7 @@ namespace CSharpGDI
             int b = (int)(w1 * RGB1[2] + w2 * RGB2[2]);
             return new int[] {r, g, b};
         }
-        private static tmpPoint project3D(double x,double y,double z)
+        private tmpPoint project3D(double x,double y,double z)
         {
             double p, d;
             x -= vars.camX;
@@ -203,7 +192,7 @@ namespace CSharpGDI
             }
         }
         //画背景粒子
-        private static void DrawFloor()
+        private void DrawFloor()
         {
             double x, y, z, d, a, size;
             for (var i = -25; i <= 25; i += 1)
@@ -258,7 +247,7 @@ namespace CSharpGDI
 
 
         //计算粒子位置
-        private static void  ReCalc()
+        private void  ReCalc()
         {
             if (vars.points.Count < vars.initParticles)
             {
@@ -302,7 +291,7 @@ namespace CSharpGDI
             }
         }
         //画粒子
-        private static void ReDrawParticles()
+        private void ReDrawParticles()
         {
             //不加尾巴
             //vars.g.Clear(Color.Black); 

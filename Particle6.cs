@@ -3,22 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ProgressBar;
 
 namespace CSharpGDI
 {
     /// <summary>
     /// 粒子效果6——鼠标粒子
     /// </summary>
-    internal class Particle6
+    internal class Particle6:IParticle
     {
         public struct ParticleObj
         {
@@ -35,51 +26,44 @@ namespace CSharpGDI
             public SolidBrush b;
 
         }
-        static List<ParticleObj> particles = new List<ParticleObj>();
+         List<ParticleObj> particles = new List<ParticleObj>();
 
         //鼠标相关
-        static int MouseX;
-        static int MouseY;
-        static int LastMouseX;
-        static int LastMouseY;
+         int MouseX;
+         int MouseY;
+         int LastMouseX;
+         int LastMouseY;
 
-        static Bitmap dstBitmap;
-        static Graphics g;
-        static int hue=0;//色相（hue）HSL色系中的参数
-        static int step = 0;//步数
+         Bitmap dstBitmap;
+         Graphics g;
+         int hue=0;//色相（hue）HSL色系中的参数
+         int step = 0;//步数
 
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="w">宽</param>
-        /// <param name="h">高</param>
-        public static Bitmap Init(int w,int h)
+        
+        public  void Start()
         {
-            dstBitmap = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+            dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
             g= Graphics.FromImage(dstBitmap);
             g.Clear(Color.Black);
             g.SmoothingMode = SmoothingMode.AntiAlias;
             hue = 0;
 
-            return dstBitmap;
         }
 
        
         /// <summary>
         /// 动画 
         /// </summary>
-        /// <param name="w">宽</param>
-        /// <param name="h">高</param>
-        public static Bitmap Start(int w, int h)
+        public  Bitmap Update()
         {
             if (dstBitmap==null) 
-                Init(w,h);
+                Start();
             g.Clear(Color.Black);
 
             step++;
             step = step > 200 ? 0 : step;
 
-            DrawHeart(w, h, step);
+            DrawHeart(GameWindow.width, GameWindow.height, step);
 
             for (int i = 0; i < particles.Count; i++)
             {
@@ -110,7 +94,7 @@ namespace CSharpGDI
         /// <param name="mouseX"></param>
         /// <param name="mouseY"></param>
         /// <param name="eventType">事件类型 0--move;   1--click</param>
-        public static void  CreateParticles(int mouseX, int mouseY,int eventType) 
+        public void  CreateParticles(int mouseX, int mouseY,int eventType) 
         {
             LastMouseX = MouseX;
             LastMouseY = MouseY;
@@ -159,15 +143,15 @@ namespace CSharpGDI
 
 
 
-        static double lastx=0; //用于DrawHeart 使之不干扰鼠标
-        static double lasty=0; //用于DrawHeart
+         double lastx=0; //用于DrawHeart 使之不干扰鼠标
+         double lasty=0; //用于DrawHeart
         /// <summary>
         /// 画心型，一点一点画
         /// </summary>
         /// <param name="w"></param>
         /// <param name="h"></param>
         /// <param name="step">步数0-200</param>
-        static void DrawHeart(int w, int h,int step)
+         void DrawHeart(int w, int h,int step)
         {
             double t = (double)step / 100 * Math.PI;
             double x = 16 * (Math.Pow(Math.Sin(t), 3));  //心形曲线函数X
@@ -211,7 +195,7 @@ namespace CSharpGDI
         /// <param name="Saturation">饱和度（saturation）0-100</param>
         /// <param name="Lightness">亮度（lightness）0-100</param>
         /// <returns>Color</returns>
-        static Color HslToRgb(int Hue, int Saturation, int Lightness)
+        Color HslToRgb(int Hue, int Saturation, int Lightness)
         {
             double r = 0.0;
             double g = 0.0;
