@@ -14,5 +14,6 @@ namespace CSharpGDI
         public static int mouseY;
         public static int mouse_V; //鼠标移动方向 0：x  1：y
         public static bool isMouseDown; //鼠标是否按下
+        public static bool isMouseIn; //鼠标是否在区域内
     }
 }

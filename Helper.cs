@@ -19,8 +19,78 @@ namespace CSharpGDI
         public int x;
         public int y;
     }
-    internal class Helper
+    public class Helper
     {
+        /// <summary>
+        /// 将HSL色系转换成Color对象
+        /// </summary>
+        /// <param name="Hue">色相（hue）0-360</param>
+        /// <param name="Saturation">饱和度（saturation）0-100</param>
+        /// <param name="Lightness">亮度（lightness）0-100</param>
+        /// <returns>Color</returns>
+        public static  Color HslToRgb(int Hue, int Saturation, int Lightness)
+        {
+            double r = 0.0;
+            double g = 0.0;
+            double b = 0.0;
+            double h = ((double)Hue) % 360.0;
+            double s = ((double)Saturation) / 100.0;
+            double l = ((double)Lightness) / 100.0;
+            if (s == 0.0)
+            {
+                r = l;
+                g = l;
+                b = l;
+            }
+            else
+            {
+                double d = h / 60.0;
+                int num11 = (int)Math.Floor(d);
+                double num10 = d - num11;
+                double num7 = l * (1.0 - s);
+                double num8 = l * (1.0 - (s * num10));
+                double num9 = l * (1.0 - (s * (1.0 - num10)));
+                switch (num11)
+                {
+                    case 0:
+                        r = l;
+                        g = num9;
+                        b = num7;
+                        break;
+                    case 1:
+                        r = num8;
+                        g = l;
+                        b = num7;
+                        break;
+                    case 2:
+                        r = num7;
+                        g = l;
+                        b = num9;
+                        break;
+                    case 3:
+                        r = num7;
+                        g = num8;
+                        b = l;
+                        break;
+                    case 4:
+                        r = num9;
+                        g = num7;
+                        b = l;
+                        break;
+                    case 5:
+                        r = l;
+                        g = num7;
+                        b = num8;
+                        break;
+                }
+            }
+            int R = Convert.ToInt32(r * 255.0f);
+            int G = Convert.ToInt32(g * 255.0f);
+            int B = Convert.ToInt32(b * 255.0f);
+
+            return Color.FromArgb(R, G, B);
+        }
+
         //内存法提取图片像素数据 
         public static List<pixelStr> GetImagePixel(Bitmap curBitmap)
         {

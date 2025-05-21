@@ -43,6 +43,7 @@
             this.btnParticle2 = new System.Windows.Forms.Button();
             this.btnparticle1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnMagnetism = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -63,6 +64,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.MediumTurquoise;
+            this.splitContainer1.Panel1.Controls.Add(this.btnMagnetism);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.btnMathArc);
@@ -87,7 +89,7 @@
             this.groupBox1.Controls.Add(this.btnNextMath);
             this.groupBox1.Controls.Add(this.trackBar1_split);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Location = new System.Drawing.Point(29, 459);
+            this.groupBox1.Location = new System.Drawing.Point(26, 539);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(389, 170);
             this.groupBox1.TabIndex = 21;
@@ -241,8 +243,22 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.pictureBox1.MouseEnter += new System.EventHandler(this.pictureBox1_MouseEnter);
+            this.pictureBox1.MouseLeave += new System.EventHandler(this.pictureBox1_MouseLeave);
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
+            // 
+            // btnMagnetism
+            // 
+            this.btnMagnetism.BackColor = System.Drawing.SystemColors.Control;
+            this.btnMagnetism.Location = new System.Drawing.Point(49, 474);
+            this.btnMagnetism.Margin = new System.Windows.Forms.Padding(4);
+            this.btnMagnetism.Name = "btnMagnetism";
+            this.btnMagnetism.Size = new System.Drawing.Size(348, 44);
+            this.btnMagnetism.TabIndex = 22;
+            this.btnMagnetism.Text = "磁吸效果";
+            this.btnMagnetism.UseVisualStyleBackColor = false;
+            this.btnMagnetism.Click += new System.EventHandler(this.btnMagnetism_Click);
             // 
             // Form1
             // 
@@ -285,6 +301,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btnNextMath;
+        private System.Windows.Forms.Button btnMagnetism;
     }
 }
 

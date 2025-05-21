@@ -207,6 +207,10 @@ namespace CSharpGDI
                 limitFps = 0;
             }
         }
+        private void btnMagnetism_Click(object sender, EventArgs e)
+        {
+            butonClick((Button)sender, new Particle8());
+        }
 
         private void trackBar1_split_ValueChanged(object sender, EventArgs e)
         {
@@ -225,5 +229,17 @@ namespace CSharpGDI
             GameWindow.width = pictureBox1.Width;
             GameWindow.height = pictureBox1.Height;
         }
+
+        private void pictureBox1_MouseEnter(object sender, EventArgs e)
+        {
+            GameWindow.isMouseIn = true;
+        }
+
+        private void pictureBox1_MouseLeave(object sender, EventArgs e)
+        {
+            GameWindow.isMouseIn = false;
+        }
+
+        
     }
 }
