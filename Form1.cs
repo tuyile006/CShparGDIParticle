@@ -13,7 +13,7 @@ using System.Reflection.Emit;
 using System.Timers;
 using System.Threading;
 using System.Drawing.Drawing2D;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+
 
 namespace CSharpGDI
 {
@@ -28,8 +28,8 @@ namespace CSharpGDI
         {
             boxGraph = pictureBox1.CreateGraphics();
 
-            GameWindow.width = pictureBox1.Width;
-            GameWindow.height = pictureBox1.Height;
+            CanvasWindow.width = pictureBox1.Width;
+            CanvasWindow.height = pictureBox1.Height;
         }
         Bitmap currbmp = null;
         IParticle curParticle = null;
@@ -44,7 +44,9 @@ namespace CSharpGDI
             btnFluid.Text = "水流体效果";
             btnMouseParticle.Text = "爱心效果";
             btnMathArc.Text = "数学曲线";
-            groupBox1.Visible = false;
+            btnBGtimer.Text = "八卦时钟";
+            btnMagnetism.Text = "磁吸效果";
+            MathGroup.Visible = false;
             label2.Text = "";
             limitFps = 0;
             fps = 0;
@@ -104,14 +106,14 @@ namespace CSharpGDI
         //鼠标移动事件
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (Math.Abs(e.X - GameWindow.mouseX) > Math.Abs(e.Y - GameWindow.mouseY))
+            if (Math.Abs(e.X - CanvasWindow.mouseX) > Math.Abs(e.Y - CanvasWindow.mouseY))
                 V = 0;
             else
                 V = 1;
 
-            GameWindow.mouseX = e.Location.X;
-            GameWindow.mouseY = e.Location.Y;
-            GameWindow.mouse_V = V;
+            CanvasWindow.mouseX = e.Location.X;
+            CanvasWindow.mouseY = e.Location.Y;
+            CanvasWindow.mouse_V = V;
 
             if (curParticle!=null&&curParticleName == "爱心效果")
             {
@@ -120,12 +122,12 @@ namespace CSharpGDI
          }
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            GameWindow.isMouseDown = true;
+            CanvasWindow.isMouseDown = true;
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            GameWindow.isMouseDown = false;
+            CanvasWindow.isMouseDown = false;
             if (curParticle != null && curParticleName == "爱心效果")
             {
                 ((Particle6)curParticle).CreateParticles(e.X, e.Y, 1);
@@ -169,7 +171,6 @@ namespace CSharpGDI
         }
 
        
-
         private void btn3dparticle_Click(object sender, EventArgs e)
         {
             butonClick((Button)sender, new Particle4());
@@ -180,6 +181,10 @@ namespace CSharpGDI
             butonClick((Button)sender, new Particle5());
             label2.Text = "有鼠标点击效果";
            
+        }
+        private void btnBGtimer_Click(object sender, EventArgs e)
+        {
+            butonClick((Button)sender, new Particle9());
         }
         private void btnMouseParticle_Click(object sender, EventArgs e)
         {
@@ -197,7 +202,7 @@ namespace CSharpGDI
             butonClick((Button)sender, new Particle7());
             if (btnMathArc.Text.Contains("停止"))
             {
-                groupBox1.Visible = true;
+                MathGroup.Visible = true;
                 trackBar1_split.Value = 100;
                 //需要限制fps
                 SetLimitFps(90);
@@ -226,20 +231,21 @@ namespace CSharpGDI
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            GameWindow.width = pictureBox1.Width;
-            GameWindow.height = pictureBox1.Height;
+            CanvasWindow.width = pictureBox1.Width;
+            CanvasWindow.height = pictureBox1.Height;
         }
 
         private void pictureBox1_MouseEnter(object sender, EventArgs e)
         {
-            GameWindow.isMouseIn = true;
+            CanvasWindow.isMouseIn = true;
         }
 
         private void pictureBox1_MouseLeave(object sender, EventArgs e)
         {
-            GameWindow.isMouseIn = false;
+            CanvasWindow.isMouseIn = false;
         }
 
-        
+       
     }
 }
+

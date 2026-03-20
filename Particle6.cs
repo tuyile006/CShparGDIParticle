@@ -42,7 +42,7 @@ namespace CSharpGDI
         
         public  void Start()
         {
-            dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
+            dstBitmap = new Bitmap(CanvasWindow.width, CanvasWindow.height, PixelFormat.Format24bppRgb);
             g= Graphics.FromImage(dstBitmap);
             g.Clear(Color.Black);
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -63,7 +63,7 @@ namespace CSharpGDI
             step++;
             step = step > 200 ? 0 : step;
 
-            DrawHeart(GameWindow.width, GameWindow.height, step);
+            DrawHeart(CanvasWindow.width, CanvasWindow.height, step);
 
             for (int i = 0; i < particles.Count; i++)
             {
@@ -193,3 +193,4 @@ namespace CSharpGDI
 
     }
 }
+

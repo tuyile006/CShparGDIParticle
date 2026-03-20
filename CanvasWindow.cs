@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace CSharpGDI
 {
-    public class GameWindow
+    /// <summary>
+    /// 动画窗口属性
+    /// </summary>
+    public class CanvasWindow
     {
         public static int width;
         public static int height;
@@ -17,3 +20,4 @@ namespace CSharpGDI
         public static bool isMouseIn; //鼠标是否在区域内
     }
 }
+

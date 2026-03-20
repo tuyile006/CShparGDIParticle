@@ -26,17 +26,17 @@ namespace CSharpGDI
         {
             int span = 6;
             particles.Clear();
-            Bitmap bmp=new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
-            BitmapData data = bmp.LockBits(new Rectangle(0, 0, GameWindow.width, GameWindow.height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            int length = GameWindow.height * data.Stride;
+            Bitmap bmp=new Bitmap(CanvasWindow.width, CanvasWindow.height, PixelFormat.Format24bppRgb);
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, CanvasWindow.width, CanvasWindow.height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            int length = CanvasWindow.height * data.Stride;
             byte[] RGB = new byte[length];
             System.IntPtr Scan0 = data.Scan0;
             System.Runtime.InteropServices.Marshal.Copy(Scan0, RGB, 0, length);
             
-            for (int y = 0; y < GameWindow.height; y++)
+            for (int y = 0; y < CanvasWindow.height; y++)
             {
                 int index = y * data.Stride;
-                for (int x = 0; x < GameWindow.width; x++)
+                for (int x = 0; x < CanvasWindow.width; x++)
                 {
                     if (x % span == 0 && y % span == 0)
                     {
@@ -65,35 +65,35 @@ namespace CSharpGDI
             for (int i = 0; i < particles.Count; i++)
             {
                 ParticleObj p = particles[i];
-                if (p.x > GameWindow.mouseX - R && p.x < GameWindow.mouseX + R
-                    && p.y > GameWindow.mouseY - R && p.y < GameWindow.mouseY + R)
+                if (p.x > CanvasWindow.mouseX - R && p.x < CanvasWindow.mouseX + R
+                    && p.y > CanvasWindow.mouseY - R && p.y < CanvasWindow.mouseY + R)
                 {
                     //当前点在圆内时
-                    if (R * R > (p.x - GameWindow.mouseX) * (p.x - GameWindow.mouseX) + (p.y - GameWindow.mouseY) * (p.y - GameWindow.mouseY))
+                    if (R * R > (p.x - CanvasWindow.mouseX) * (p.x - CanvasWindow.mouseX) + (p.y - CanvasWindow.mouseY) * (p.y - CanvasWindow.mouseY))
                     {
                         //发散
                         if (V == 0) //移动y轴
                         {
-                            double r1 = Math.Sqrt(R * R - (GameWindow.mouseX - p.x) * (GameWindow.mouseX - p.x));
-                            if (p.y > GameWindow.mouseY)
+                            double r1 = Math.Sqrt(R * R - (CanvasWindow.mouseX - p.x) * (CanvasWindow.mouseX - p.x));
+                            if (p.y > CanvasWindow.mouseY)
                             {
-                                p.y = (int)(GameWindow.mouseY + r1 * 3);
+                                p.y = (int)(CanvasWindow.mouseY + r1 * 3);
                             }
                             else
                             {
-                                p.y = (int)(GameWindow.mouseY - r1 * 3);
+                                p.y = (int)(CanvasWindow.mouseY - r1 * 3);
                             }
                         }
                         else  //移动x轴
                         {
-                            double r2 = Math.Sqrt(R * R - (GameWindow.mouseY - p.y) * (GameWindow.mouseY - p.y));
-                            if (p.x > GameWindow.mouseX)
+                            double r2 = Math.Sqrt(R * R - (CanvasWindow.mouseY - p.y) * (CanvasWindow.mouseY - p.y));
+                            if (p.x > CanvasWindow.mouseX)
                             {
-                                p.x = (int)(GameWindow.mouseX + r2 * 3);
+                                p.x = (int)(CanvasWindow.mouseX + r2 * 3);
                             }
                             else
                             {
-                                p.x = (int)(GameWindow.mouseX - r2 * 3);
+                                p.x = (int)(CanvasWindow.mouseX - r2 * 3);
                             }
                         }
 
@@ -126,16 +126,16 @@ namespace CSharpGDI
             }
 
             //还原图片
-            Bitmap dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
-            BitmapData dstBmData = dstBitmap.LockBits(new Rectangle(0, 0, GameWindow.width, GameWindow.height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            Bitmap dstBitmap = new Bitmap(CanvasWindow.width, CanvasWindow.height, PixelFormat.Format24bppRgb);
+            BitmapData dstBmData = dstBitmap.LockBits(new Rectangle(0, 0, CanvasWindow.width, CanvasWindow.height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
-            int dst_bytes = GameWindow.height * dstBmData.Stride;
+            int dst_bytes = CanvasWindow.height * dstBmData.Stride;
             byte[] dstValues = new byte[dst_bytes];
 
 
             foreach (ParticleObj p in particles)
             {
-                if (p.y < 0 || p.y >= GameWindow.height || p.x < 0 || p.x >= GameWindow.width) continue;
+                if (p.y < 0 || p.y >= CanvasWindow.height || p.x < 0 || p.x >= CanvasWindow.width) continue;
                 int n = p.y * dstBmData.Stride + p.x * 3;
                 //只处理每行中图像像素数据,舍弃未用空间
                 //注意位图结构中RGB按BGR的顺序存储
@@ -159,3 +159,4 @@ namespace CSharpGDI
         }
     }
 }
+

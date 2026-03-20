@@ -13,3 +13,4 @@ namespace CSharpGDI
         Bitmap Update();
     }
 }
+

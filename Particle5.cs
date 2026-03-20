@@ -32,33 +32,33 @@ namespace CSharpGDI
         public void Start()
         {
             int particleNum = 1200;//粒子数量
-            dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
+            dstBitmap = new Bitmap(CanvasWindow.width, CanvasWindow.height, PixelFormat.Format24bppRgb);
             g = Graphics.FromImage(dstBitmap);
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
-            canvasW = GameWindow.width; 
-            canvasH = GameWindow.height;
+            canvasW = CanvasWindow.width; 
+            canvasH = CanvasWindow.height;
             SolidBrush brush = new SolidBrush(Color.FromArgb(72, 209, 204));
             linPen = new Pen(brush);
             BoxBordPen = new Pen(brush, 3);
 
-            kRadius = Math.Round(0.04 * Math.Sqrt(GameWindow.width * GameWindow.height));
+            kRadius = Math.Round(0.04 * Math.Sqrt(CanvasWindow.width * CanvasWindow.height));
             container.init(0.35);
             particles = new List<ParticleObj>();
             double s = container.scale;
-            double x = GameWindow.width * s * 0.5;
-            double y = GameWindow.height * s * 0.5;
+            double x = CanvasWindow.width * s * 0.5;
+            double y = CanvasWindow.height * s * 0.5;
             for (int i = 0; i < particleNum; ++i)
             {
                 particles.Add(new ParticleObj(x, y));
                 x += kRadius / 2.5;
-                if (x > GameWindow.width * (1 - s * 0.5))
+                if (x > CanvasWindow.width * (1 - s * 0.5))
                 {
-                    x = GameWindow.width * s * 0.5;
+                    x = CanvasWindow.width * s * 0.5;
                     y += kRadius / 3;
                 }
             }
-            grid.initSize(GameWindow.width, GameWindow.height, (int)kRadius);
+            grid.initSize(CanvasWindow.width, CanvasWindow.height, (int)kRadius);
             grid.fill(particles);
 
         }
@@ -101,8 +101,8 @@ namespace CSharpGDI
             
             public void turbine()
             {
-                double dx = GameWindow.mouseX - this.x;
-                double dy = GameWindow.mouseY - this.y;
+                double dx = CanvasWindow.mouseX - this.x;
+                double dy = CanvasWindow.mouseY - this.y;
                 double d = Math.Sqrt(dx * dx + dy * dy);
                 if (d < 2 * kRadius&& d !=-1)
                 {
@@ -115,7 +115,7 @@ namespace CSharpGDI
             public void integrate()
             {
                 container.limit(this);
-                if (GameWindow.isMouseDown) this.turbine();
+                if (CanvasWindow.isMouseDown) this.turbine();
                 double x0 = this.x;
                 double y0 = this.y;
                 this.x += x0 - this.px;
@@ -303,7 +303,7 @@ namespace CSharpGDI
                 double w = canvasW;
                 double h = canvasH;
                 double s = this.scale;
-                this.ai += GameWindow.isMouseDown ? 0 : 0.05;
+                this.ai += CanvasWindow.isMouseDown ? 0 : 0.05;
                 double angle = Math.Sin(this.ai) * s * Math.Min(1.0, h / w);
                 double cos = Math.Cos(angle);
                 double sin = Math.Sin(angle);
@@ -337,3 +337,4 @@ namespace CSharpGDI
         
     }
 }
+

@@ -46,15 +46,15 @@ namespace CSharpGDI
         /// </summary>
         public  void Start()
         {
-            dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
+            dstBitmap = new Bitmap(CanvasWindow.width, CanvasWindow.height, PixelFormat.Format24bppRgb);
             g= Graphics.FromImage(dstBitmap);
             g.Clear(Color.Black);
             g.SmoothingMode = SmoothingMode.AntiAlias;
-            width = GameWindow.width;
-            height = GameWindow.height;
+            width = CanvasWindow.width;
+            height = CanvasWindow.height;
             hue = 0;
-            coordinateSystem_x = GameWindow.width / 2;
-            coordinateSystem_y = GameWindow.height / 2;
+            coordinateSystem_x = CanvasWindow.width / 2;
+            coordinateSystem_y = CanvasWindow.height / 2;
 
             mathList.Add("sin");
             mathList.Add("cos");
@@ -550,3 +550,4 @@ namespace CSharpGDI
 
     }
 }
+

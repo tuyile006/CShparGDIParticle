@@ -56,7 +56,7 @@ namespace CSharpGDI
         
         public void Start()
         {
-            Bitmap dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
+            Bitmap dstBitmap = new Bitmap(CanvasWindow.width, CanvasWindow.height, PixelFormat.Format24bppRgb);
             Graphics g= Graphics.FromImage(dstBitmap);
             g.Clear(Color.Black);
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -65,15 +65,15 @@ namespace CSharpGDI
             vars.g = g;
             vars.dstBitmap = dstBitmap;
             vars.frameNo = 0;
-            vars.w = GameWindow.width;
-            vars.h = GameWindow.height;
+            vars.w = CanvasWindow.width;
+            vars.h = CanvasWindow.height;
             vars.camX = 0;
             vars.camY = 0;
             vars.camZ = -14;
             vars.pitch = Elevation(vars.camX, vars.camZ, vars.camY) - Math.PI / 2;
             vars.yaw = 0; //偏角
-            vars.cx = GameWindow.width / 2;
-            vars.cy = GameWindow.height / 2;
+            vars.cx = CanvasWindow.width / 2;
+            vars.cy = CanvasWindow.height / 2;
             vars.scale = 500;
             vars.floor = 26.5;
 
@@ -335,3 +335,4 @@ namespace CSharpGDI
         
     }
 }
+

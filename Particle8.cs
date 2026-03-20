@@ -37,8 +37,8 @@ namespace CSharpGDI
         public void Start()
         {
             particles.Clear();
-            int w = (int)(Math.Floor((decimal)(GameWindow.width - padding * 2)/(d2 + d1)));
-            int h = (int)(Math.Floor((decimal)(GameWindow.height - padding * 2)/(d2 + d1)));
+            int w = (int)(Math.Floor((decimal)(CanvasWindow.width - padding * 2)/(d2 + d1)));
+            int h = (int)(Math.Floor((decimal)(CanvasWindow.height - padding * 2)/(d2 + d1)));
             Random rnd = new Random();
             for (int y = 0; y < h; y++)
             {
@@ -60,7 +60,7 @@ namespace CSharpGDI
                 }
             }
 
-            dstBitmap = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format24bppRgb);
+            dstBitmap = new Bitmap(CanvasWindow.width, CanvasWindow.height, PixelFormat.Format24bppRgb);
             g = Graphics.FromImage(dstBitmap);
             g.Clear(Color.Black);
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -76,16 +76,16 @@ namespace CSharpGDI
             g.SmoothingMode = SmoothingMode.AntiAlias;
             
 
-            if (GameWindow.isMouseIn)
+            if (CanvasWindow.isMouseIn)
             {
                 //初始化 
                 for (int i = 0; i < particles.Count; i++)
                 {
                     ParticleObj p = particles[i];
                     //长线
-                    double mousedis = Math.Sqrt(Math.Pow((p.x - GameWindow.mouseX), 2) + Math.Pow((p.y - GameWindow.mouseY), 2));
-                    double sin= (p.x - GameWindow.mouseX) / mousedis;
-                    double cos= (p.y - GameWindow.mouseY) / mousedis;
+                    double mousedis = Math.Sqrt(Math.Pow((p.x - CanvasWindow.mouseX), 2) + Math.Pow((p.y - CanvasWindow.mouseY), 2));
+                    double sin= (p.x - CanvasWindow.mouseX) / mousedis;
+                    double cos= (p.y - CanvasWindow.mouseY) / mousedis;
 
                     double y0= sin * d2/2; //y轴增量
                     double x0= cos * d2/2; //x轴增量
@@ -129,3 +129,4 @@ namespace CSharpGDI
         }
     }
 }
+

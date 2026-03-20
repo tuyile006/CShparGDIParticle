@@ -37,10 +37,10 @@ namespace CSharpGDI
 
             particles.Clear();
             Random rnd=new Random();
-            int r0 = Math.Min(GameWindow.width / size, GameWindow.height / size);
-            for (var x = 0; x < GameWindow.width / r0; x++)
+            int r0 = Math.Min(CanvasWindow.width / size, CanvasWindow.height / size);
+            for (var x = 0; x < CanvasWindow.width / r0; x++)
             {
-                for (var y = 0; y < GameWindow.height / r0; y++)
+                for (var y = 0; y < CanvasWindow.height / r0; y++)
                 {
                     ParticleObj p = new ParticleObj()
                     {
@@ -64,7 +64,7 @@ namespace CSharpGDI
                 }
             }
 
-            bmp = new Bitmap(GameWindow.width, GameWindow.height, PixelFormat.Format32bppArgb);
+            bmp = new Bitmap(CanvasWindow.width, CanvasWindow.height, PixelFormat.Format32bppArgb);
             g = Graphics.FromImage(bmp);
         }
 
@@ -88,20 +88,20 @@ namespace CSharpGDI
             for (var i = 0; i < particles.Count; i++)
             {
                 var p = particles[i];
-                if (R * R > (p.px - GameWindow.mouseX) * (p.px - GameWindow.mouseX) + (p.py - GameWindow.mouseY) * (p.py - GameWindow.mouseY))
+                if (R * R > (p.px - CanvasWindow.mouseX) * (p.px - CanvasWindow.mouseX) + (p.py - CanvasWindow.mouseY) * (p.py - CanvasWindow.mouseY))
                 {
-                    if (p.px > GameWindow.mouseX)
+                    if (p.px > CanvasWindow.mouseX)
                         p.px += speed ;
-                    if (p.px < GameWindow.mouseX)
+                    if (p.px < CanvasWindow.mouseX)
                         p.px -= speed;
-                    if (p.py > GameWindow.mouseY)
+                    if (p.py > CanvasWindow.mouseY)
                         p.py += speed ;
-                    if (p.py < GameWindow.mouseY)
+                    if (p.py < CanvasWindow.mouseY)
                         p.py -= speed;
 
                     if (rnd.Next(2) == 1)
                     {
-                        p.d = (p.d+speed*5 >GameWindow.width/2?GameWindow.width/2:p.d+speed*5);
+                        p.d = (p.d+speed*5 >CanvasWindow.width/2?CanvasWindow.width/2:p.d+speed*5);
                     }
                     else
                     {
@@ -139,3 +139,4 @@ namespace CSharpGDI
        
     }
 }
+
